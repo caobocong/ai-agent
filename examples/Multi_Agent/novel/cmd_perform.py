@@ -8,7 +8,7 @@ sys.path.append("../../Gradio_Config")
 from agents.SOP import SOP
 from agents.Agent import Agent
 from agents.Environment import Environment
-from gradio_base import Client
+from examples.Gradio_Config.gradio_base import Client
 from agents.Memory import Memory
 # from gradio_example import DebateUI
 

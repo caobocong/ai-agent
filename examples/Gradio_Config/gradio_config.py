@@ -19,6 +19,7 @@ from PIL import Image
 import requests
 from typing import List, Tuple
 
+
 class GradioConfig:
     # How many avatars are currently registered
     POINTER = 0

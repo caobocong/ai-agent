@@ -1,13 +1,15 @@
 import sys
 sys.path.append("../../Gradio_Config")
 
-from gradio_base import UIHelper, WebUI
+from examples.Gradio_Config.gradio_base import UIHelper, WebUI
 import os
-from gradio_base import WebUI, UIHelper, PORT, HOST, Client
-from gradio_config import GradioConfig as gc
+from examples.Gradio_Config.gradio_base import WebUI, UIHelper, PORT, HOST, Client
+from examples.Gradio_Config.gradio_config import GradioConfig as gc
 from typing import List, Tuple, Any
 import gradio as gr
 import time
+
+
 def get_content_between_a_b(start_tag, end_tag, text):
     extracted_text = ""
     start_index = text.find(start_tag)
@@ -26,6 +28,7 @@ def get_content_between_a_b(start_tag, end_tag, text):
 def extract(text, type):
     target_str = get_content_between_a_b(f"<{type}>", f"</{type}>", text)
     return target_str
+
 
 class DebateUI(WebUI):
     FORMAT = "{}\n<debate topic>\n{}\nAffirmative viewpoint:{}\nNegative viewpoint:{}\n<debate topic>{}"

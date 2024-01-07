@@ -27,6 +27,7 @@ import os
 from abc import abstractmethod
 import litellm
 
+
 def test_apikey_connection(api_key=None, model="gpt-3.5-turbo"):
     litellm.api_key = api_key if api_key is not None else os.environ["API_KEY"]
     if "PROXY" in os.environ:

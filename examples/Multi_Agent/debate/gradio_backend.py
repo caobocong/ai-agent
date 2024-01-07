@@ -8,9 +8,10 @@ from agents.SOP import SOP
 from agents.Agent import Agent
 from agents.Environment import Environment
 from agents.Memory import Memory
-from gradio_base import Client
+from examples.Gradio_Config.gradio_base import Client
 from run_gradio import DebateUI
-import re
+import regex
+
 
 def process(action):
     response = action.response
@@ -68,7 +69,7 @@ def block_when_next(current_agent, current_state):
             data: list = next(Client.receive_server)
 
 
-def init(config): 
+def init(config):
     if not os.path.exists("logs"):
         os.mkdir("logs")
     sop = SOP.from_config(config)
@@ -81,8 +82,9 @@ def init(config):
         agent.environment = environment
     return agents,sop,environment
 
+
 def run(agents,sop,environment):
-    while True:      
+    while True:
         current_state,current_agent= sop.next(environment,agents)
         if sop.finished:
             print("finished!")
@@ -90,11 +92,11 @@ def run(agents,sop,environment):
             os.environ.clear()
             break
         block_when_next(current_agent, current_state)
-        action = current_agent.step(current_state,"")   #component_dict = current_state[self.role[current_node.name]]   current_agent.compile(component_dict) 
+        action = current_agent.step(current_state,"")   #component_dict = current_state[self.role[current_node.name]]   current_agent.compile(component_dict)
         gradio_process(action,current_state)
         memory = process(action)
         environment.update_memory(memory,current_state)
-        
+
 
 def prepare(agents, sop, environment):
     client = Client()
@@ -120,16 +122,16 @@ def prepare(agents, sop, environment):
         agents[Client.cache["cosplay"]].is_user = True
     for state in sop.states.values():
         new_topic = "<debate topic><Theme>{}</Theme>\n<Affirmative view>{}</Affirmative view>\n<Negative viewpoint>{}</Negative viewpoint></debate topic>"
-        state.environment_prompt = re.sub(r'<debate topic>.*?</debate topic>',new_topic,state.environment_prompt)
+        state.environment_prompt = regex.sub(r'<debate topic>.*?</debate topic>',new_topic,state.environment_prompt)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='A demo of chatbot')
     parser.add_argument('--agent', type=str, help='path to SOP json', default="config.json")
     args = parser.parse_args()
-    
+
     agents,sop,environment = init(args.agent)
-    
+
     # add ==============================
     prepare(agents, sop, environment)
     # ==================================
